@@ -4,35 +4,31 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    public float mouseSensitivity = 100;
-    
-    float pitch = 0;
-    Transform playerBody;
 
-    // Start is called before the first frame update
+    public Transform playerBody;
+
+    public float mouseSensitivity = 10f;
+
+    float pitch = 0f;
+
     void Start()
     {
-        playerBody = transform.parent.transform;
-
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float moveX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float moveY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float moveX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float moveY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        // yaw
+        // Yaw
         playerBody.Rotate(Vector3.up * moveX);
 
-        //pitch
+        // Pitch
         pitch -= moveY;
-
         pitch = Mathf.Clamp(pitch, -90f, 90f);
-        transform.localRotation = Quaternion.Euler(pitch, 0, 0);
 
+        transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
     }
-
 }
