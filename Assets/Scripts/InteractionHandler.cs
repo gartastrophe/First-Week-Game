@@ -6,10 +6,11 @@ using UnityEngine.UIElements;
 
 public class InteractionHandler : MonoBehaviour
 {
-    public float interactRange = 5f;
     public GameObject createdObj;
+    public float interactRange = 5f;
     public float instXOff;
     public float instZOff;
+    public AudioClip interactionSFX;
 
     Vector3 spawnPos;
     GameObject interactable;
@@ -48,6 +49,7 @@ public class InteractionHandler : MonoBehaviour
         spawnPos.y = interactable.transform.position.y;
         spawnPos.z = interactable.transform.position.z + instZOff + Random.Range(0.0f, 0.1f);
 
+        AudioSource.PlayClipAtPoint(interactionSFX, transform.position);
         Instantiate(createdObj, spawnPos, transform.rotation);
         createdObj.SetActive(true);
     }

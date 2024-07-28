@@ -21,9 +21,15 @@ public class PlayerControls : MonoBehaviour
     public float sprintMaxCapacity = 100f;
     public float sprintDrainSpeed = 30f;
     public float sprintRegenSpeed = 20f;
+
+    public AudioClip jumpSFX;
+    public AudioSource walkingSFX;
+    public AudioSource runningSFX;
+
     [HideInInspector] public float sprintCapacity;
     private bool canRegenSprint = true;
     private bool canSprint = true;
+    private bool sprintToggle;
 
     private Coroutine regenerateCoroutine;
 
@@ -37,6 +43,7 @@ public class PlayerControls : MonoBehaviour
     {
         PlayerInput();
         MovePlayer();
+        AudioControl();
     }
 
     void PlayerInput()
@@ -44,7 +51,7 @@ public class PlayerControls : MonoBehaviour
         //Get player input here
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        bool sprintToggle = Input.GetKey(KeyCode.LeftShift);
+        sprintToggle = Input.GetKey(KeyCode.LeftShift);
 
         input = (transform.right * moveHorizontal + transform.forward * moveVertical);
 
@@ -100,6 +107,7 @@ public class PlayerControls : MonoBehaviour
             {
                 //Velocity
                 moveDirection.y = Mathf.Sqrt(2 * jumpHeight * gravity);
+                AudioSource.PlayClipAtPoint(jumpSFX, transform.position);
             }
             else
             {
@@ -153,6 +161,30 @@ public class PlayerControls : MonoBehaviour
             if (sprintCapacity  > sprintMaxCapacity)
             {
                 sprintCapacity = sprintMaxCapacity;
+            }
+        }
+    }
+
+    void AudioControl()
+    {
+        if (!controller.isGrounded)
+        {
+            // if sprint not toggled and controller grounded, play walking
+            if (!sprintToggle) 
+            {
+                runningSFX.Stop();
+                walkingSFX.Play();
+            }
+            // if sprint toggled and controller grounded, play running
+            else if (sprintToggle)
+            {
+                walkingSFX.Stop();
+                runningSFX.Play();
+            }
+            else
+            {
+                walkingSFX.Stop();
+                runningSFX.Stop();
             }
         }
     }
