@@ -56,15 +56,15 @@ public class LevelManager : MonoBehaviour
         score = 0; // Reset the score
         DeliveryHandler.deliveryCount = 0; // Reset the delivery count
 
-        GameObject collectables = GameObject.Find("Collectables");
-        if (collectables != null)
+        GameObject Collectibles = GameObject.Find("Collectibles");
+        if (Collectibles != null)
         {
-            totalItems = collectables.transform.childCount;
+            totalItems = Collectibles.transform.childCount;
             Debug.Log("Total items to collect: " + totalItems);
         }
         else
         {
-            Debug.LogError("Collectables object not found!");
+            Debug.LogError("Collectibles object not found!");
         }
 
         SetScoreText();
@@ -76,7 +76,7 @@ public class LevelManager : MonoBehaviour
     private void UpdateScore()
     {
         score = DeliveryHandler.deliveryCount;
-        Debug.Log("Current score: " + score);
+        //Debug.Log("Current score: " + score);
         SetScoreText();
     }
 
@@ -90,7 +90,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Win condition not met. Score: " + score + ", Total Items: " + totalItems + ", gameWonTriggered: " + gameWonTriggered + ", gameOverTriggered: " + gameOverTriggered);
+            //Debug.Log("Win condition not met. Score: " + score + ", Total Items: " + totalItems + ", gameWonTriggered: " + gameWonTriggered + ", gameOverTriggered: " + gameOverTriggered);
         }
     }
 
