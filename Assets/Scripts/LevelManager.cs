@@ -11,12 +11,14 @@ public class LevelManager : MonoBehaviour
     public Text gameOverText;
     public Text gameWonText;
 
-    public float startTime = 300f;
+    public float totalTime = 30; 
 
     public PlayerControls playerControls;
     public MouseLook mouseLook;
     public JumpScareController jumpScareController;
     public AudioClip winAudioClip;
+
+    public string nextSceneName; 
 
     private int score = 0;
     private int totalItems;
@@ -26,6 +28,9 @@ public class LevelManager : MonoBehaviour
     private bool gameWonTriggered = false;
 
     private AudioSource audioSource;
+
+    private int startHour = 9;
+    private int endHour = 17; // 5 PM
 
     void Start()
     {
@@ -52,9 +57,9 @@ public class LevelManager : MonoBehaviour
 
     private void InitializeGame()
     {
-        timer = startTime;
-        score = 0; // Reset the score
-        DeliveryHandler.deliveryCount = 0; // Reset the delivery count
+        timer = totalTime; 
+        score = 0; 
+        DeliveryHandler.deliveryCount = 0; 
 
         GameObject Collectibles = GameObject.Find("Collectibles");
         if (Collectibles != null)
@@ -76,7 +81,6 @@ public class LevelManager : MonoBehaviour
     private void UpdateScore()
     {
         score = DeliveryHandler.deliveryCount;
-        //Debug.Log("Current score: " + score);
         SetScoreText();
     }
 
@@ -87,10 +91,6 @@ public class LevelManager : MonoBehaviour
             Debug.Log("Win condition met. Setting gameWonTriggered to true.");
             gameWonTriggered = true;
             LevelBeat();
-        }
-        else
-        {
-            //Debug.Log("Win condition not met. Score: " + score + ", Total Items: " + totalItems + ", gameWonTriggered: " + gameWonTriggered + ", gameOverTriggered: " + gameOverTriggered);
         }
     }
 
@@ -130,9 +130,14 @@ public class LevelManager : MonoBehaviour
 
     private void SetTimerText()
     {
-        int minutes = Mathf.FloorToInt(timer / 60F);
-        int seconds = Mathf.FloorToInt(timer % 60F);
-        timerText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
+        float elapsedTime = (totalTime - timer) / totalTime * (endHour - startHour);
+        int currentHour = startHour + Mathf.FloorToInt(elapsedTime);
+
+        string period = currentHour >= 12 ? "PM" : "AM";
+        int displayHour = currentHour > 12 ? currentHour - 12 : currentHour;
+        if (displayHour == 0) displayHour = 12;
+
+        timerText.text = string.Format("{0:0} {1}", displayHour, period);
     }
 
     private void HideGameEndTexts()
@@ -174,16 +179,28 @@ public class LevelManager : MonoBehaviour
         DisablePlayerControls();
         HideUIElements();
 
-        gameWonText.text = "You've completed your shift!";
-        gameWonText.gameObject.SetActive(true);
+        string currentSceneName = SceneManager.GetActiveScene().name;
 
-        if (winAudioClip != null && audioSource != null)
+        if (currentSceneName == "Level3")
         {
-            audioSource.clip = winAudioClip;
-            audioSource.Play();
-        }
+            gameWonText.text = "You have completed your first week!";
+            gameWonText.gameObject.SetActive(true);
 
-        Invoke("ProceedToNextLevel", 2);
+            if (winAudioClip != null && audioSource != null)
+            {
+                audioSource.clip = winAudioClip;
+                audioSource.Play();
+            }
+
+            Invoke("ProceedToNextLevel", 2);
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(nextSceneName))
+            {
+                Invoke("LoadNextScene", 2);
+            }
+        }
     }
 
     private void DisablePlayerControls()
@@ -215,9 +232,14 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    private void LoadNextScene()
+    {
+        Debug.Log("Loading next scene: " + nextSceneName);
+        SceneManager.LoadScene(nextSceneName);
+    }
+
     private void ProceedToNextLevel()
     {
         Debug.Log("Proceeding to next level");
-        // Add your logic for proceeding to the next level here
     }
 }
