@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 8645210377540266387}
   - component: {fileID: 3497505052175950409}
   - component: {fileID: 4863053714848608795}
-  - component: {fileID: 2750098711314572477}
+  - component: {fileID: -6376736314857005797}
   m_Layer: 0
-  m_Name: Collectible
+  m_Name: Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -225,7 +225,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.005062226, g: 0.89433956, b: 0.15562332, a: 1}
+      maxColor: {r: 0.8867924, g: 0.49920264, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4928,7 +4928,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2750098711314572477
+--- !u!114 &-6376736314857005797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

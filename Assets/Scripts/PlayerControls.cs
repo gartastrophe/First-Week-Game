@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -167,24 +168,24 @@ public class PlayerControls : MonoBehaviour
 
     void AudioControl()
     {
-        if (!controller.isGrounded)
+        if (controller.collisionFlags != CollisionFlags.Below)
         {
             // if sprint not toggled and controller grounded, play walking
             if (!sprintToggle) 
             {
-                runningSFX.Stop();
+                runningSFX.Pause();
                 walkingSFX.Play();
             }
             // if sprint toggled and controller grounded, play running
             else if (sprintToggle)
             {
-                walkingSFX.Stop();
+                walkingSFX.Pause();
                 runningSFX.Play();
             }
             else
             {
-                walkingSFX.Stop();
-                runningSFX.Stop();
+                walkingSFX.Pause();
+                runningSFX.Pause();
             }
         }
     }
