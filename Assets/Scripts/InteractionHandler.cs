@@ -24,6 +24,7 @@ public class InteractionHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.Q))
         {
             //perform raycast to check if player is looking at object within interaction range

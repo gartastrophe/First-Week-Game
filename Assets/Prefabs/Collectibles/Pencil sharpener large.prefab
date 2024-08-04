@@ -180,6 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3644ea8265c4dee45a333429ef94240a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deliveryEffect: {fileID: 550967681633757851, guid: 1e915e3aa8b6ea9418272f5e869ee755, type: 3}
+  deliverySoundClip: {fileID: 8300000, guid: 18d1ced72db58494e8ec468e0265346c, type: 3}
 --- !u!1 &7686320039436706253
 GameObject:
   m_ObjectHideFlags: 0
