@@ -24,13 +24,15 @@ public class LevelManager : MonoBehaviour
     private int totalItems;
     private float timer;
     private bool directionsVisible = true;
-    private bool gameOverTriggered = false;
+    public bool gameOverTriggered = false;
     private bool gameWonTriggered = false;
 
     private AudioSource audioSource;
 
     private int startHour = 9;
     private int endHour = 17; // 5 PM
+
+    [HideInInspector] public bool timerDisabled;
 
     void Start()
     {
@@ -49,7 +51,11 @@ public class LevelManager : MonoBehaviour
         UpdateScore();
         CheckWinCondition();
 
-        UpdateTimer();
+        if (!timerDisabled)
+        {
+            UpdateTimer();
+        }
+
         CheckLossCondition();
 
         HandleDirectionsToggle();
@@ -224,7 +230,7 @@ public class LevelManager : MonoBehaviour
         if (gameWonText != null) gameWonText.gameObject.SetActive(false);
     }
 
-    private void ReloadCurrentLevel()
+    public void ReloadCurrentLevel()
     {
         Debug.Log("Reloading current level");
         gameOverTriggered = false;

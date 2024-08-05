@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1314214286140263202}
   - component: {fileID: 2137134611981515276}
   - component: {fileID: 3614648457822005667}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BigWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5995
+  m_VersionIndex: 5998
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -302,7 +302,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: 5e1b4151be3b65545ac2f0cb5b1993b4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
