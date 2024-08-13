@@ -11,7 +11,6 @@ public class TallCoworkerSounds : MonoBehaviour
     void PlayFootstepSFX()
     {
         AudioClip clip = footstepSounds[Random.Range(0, footstepSounds.Length)];
-        Debug.Log("Playing clip: " + clip.name);
         audioSource.PlayOneShot(clip);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
 {
+    /*
     //Code from https://github.com/Comp3interactive/FieldOfView. All I did was add a transform for where I want the raycasts to start.
     public float radius;
     [Range(0,360)]
@@ -67,5 +68,53 @@ public class FieldOfView : MonoBehaviour
         {
             canSeePlayer = false;
         }
+    }
+    */
+
+    public GameObject playerRef;
+    public float chaseDistance = 10f;
+    public Transform enemyEyes;
+    public float fieldOfView = 45f;
+
+    private void OnDrawGizmos()
+    {
+        //asked chatgpt to fix the gizmos because the one from class doesnt work :)
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, chaseDistance);
+
+        Vector3 frontRayPoint = enemyEyes.position + (enemyEyes.forward * chaseDistance);
+        Vector3 leftDirection = Quaternion.Euler(0, fieldOfView * .5f, 0) * enemyEyes.forward;
+        Vector3 rightDirection = Quaternion.Euler(0, -fieldOfView * .5f, 0) * enemyEyes.forward;
+
+        Vector3 leftRayPoint = enemyEyes.position + (leftDirection * chaseDistance);
+        Vector3 rightRayPoint = enemyEyes.position + (rightDirection * chaseDistance);
+
+        Debug.DrawLine(enemyEyes.position, frontRayPoint, Color.cyan);
+        Debug.DrawLine(enemyEyes.position, leftRayPoint, Color.yellow);
+        Debug.DrawLine(enemyEyes.position, rightRayPoint, Color.yellow);
+    }
+
+
+    public bool IsPlayerInClearFov()
+    {
+        RaycastHit hit;
+
+        Vector3 directionToPlayer = playerRef.transform.position - enemyEyes.position;
+
+        if (Vector3.Angle(directionToPlayer, enemyEyes.forward) <= fieldOfView)
+        {
+            if (Physics.Raycast(enemyEyes.position, directionToPlayer, out hit, chaseDistance))
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    Debug.DrawLine(enemyEyes.position, playerRef.transform.position, Color.red);
+                    return true;
+                }
+
+                return false;
+            }
+            return false;
+        }
+        return false;
     }
 }

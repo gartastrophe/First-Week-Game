@@ -15,9 +15,6 @@ public class EnemyNav : MonoBehaviour
 
     public States currentState;
 
-    //GameObject[] wanderPoints;
-    //Vector3 nextDestination;
-
     Animator anim;
 
     FieldOfView fieldOfView;
@@ -41,6 +38,9 @@ public class EnemyNav : MonoBehaviour
 
     public float maxIdleTime = 5f;
     public float maxSearchTime = 10f;
+
+    private Vector3 lastKnownPlayerPosition;
+    public float searchRange = 4;
 
     void Start()
     {
@@ -119,7 +119,7 @@ public class EnemyNav : MonoBehaviour
             }
         }
 
-        if (fieldOfView.canSeePlayer)
+        if (fieldOfView.IsPlayerInClearFov())
         {
             currentState = States.Chase;
         }
@@ -142,7 +142,7 @@ public class EnemyNav : MonoBehaviour
             agent.isStopped = false;
             currentState = States.Patrol;
         } 
-        else if (fieldOfView.canSeePlayer)
+        else if (fieldOfView.IsPlayerInClearFov())
         {
             agent.isStopped = false;
             currentState = States.Chase;
@@ -165,8 +165,9 @@ public class EnemyNav : MonoBehaviour
                 Invoke("RestartLevel", 2);
             }
         }
-        else if (!fieldOfView.canSeePlayer)
+        else if (!fieldOfView.IsPlayerInClearFov())
         {
+            lastKnownPlayerPosition = player.transform.position;
             searchingStateTimer = maxSearchTime;
             currentState = States.Searching;
         }
@@ -180,9 +181,20 @@ public class EnemyNav : MonoBehaviour
     }
     void UpdateSearchState()
     {
-        //Debug.Log(searchingStateTimer);
+        Debug.Log(searchingStateTimer);
+        if (distanceToPlayer <= attackDistance)
+        {
+            if (!playerJumpscared)
+            {
+                levelManager.timerDisabled = true;
+                playerJumpscared = true;
+                jumpScareController.TriggerJumpScare();
+                gameObject.SetActive(false);
+                Invoke("RestartLevel", 2);
+            }
+        }
         searchingStateTimer -= Time.deltaTime;
-        if (fieldOfView.canSeePlayer)
+        if (fieldOfView.IsPlayerInClearFov())
         {
             currentState = States.Chase;
         }
@@ -191,7 +203,16 @@ public class EnemyNav : MonoBehaviour
             currentState = States.Patrol;
         }
 
-        agent.SetDestination(player.transform.position);
+        //chatgpt helped me create better search behavior
+        if (agent.remainingDistance <= agent.stoppingDistance)
+        {
+            Vector3 point;
+            if (RandomPoint(lastKnownPlayerPosition, searchRange, out point))
+            {
+                Debug.DrawRay(point, Vector3.up, Color.red, 1.0f);
+                agent.SetDestination(point);
+            }
+        }
     }
 
 
