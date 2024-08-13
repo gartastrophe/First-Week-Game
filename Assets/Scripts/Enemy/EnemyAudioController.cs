@@ -42,7 +42,7 @@ public class EnemyAudioController : MonoBehaviour
         }
         else if (distanceToEnemy > nearProximity)
         {
-            Debug.Log("audio PAUSED");
+            //Debug.Log("audio PAUSED");
             audioSource.Pause();
         }
     }

@@ -10,9 +10,11 @@ public class PlayerInteract : MonoBehaviour
     public GameObject createdObj;
     public float instXOff;
     public float instZOff;
+    public float numInteractionMax;
     public AudioClip interactionSFX;
-
+    
     Vector3 spawnPos;
+    float numInteractionCurrent;
 
     // Defs for Pickups
     public GameObject player;
@@ -32,6 +34,8 @@ public class PlayerInteract : MonoBehaviour
         {
             player = GameObject.FindGameObjectWithTag("Player");
         }
+
+        numInteractionCurrent = 0;
     }
 
     
@@ -54,7 +58,16 @@ public class PlayerInteract : MonoBehaviour
         // Interact action
         else if (Input.GetKeyDown(KeyCode.Q) && interactItem != null)
         {
-            ProcessInteract(interactItem);
+            // be sure to add empty game objects as children of collectible to increase score
+            if (numInteractionCurrent <= numInteractionMax) //limit the amount of deliverables which can be created.
+            {
+                ProcessInteract(interactItem);
+            }
+            else 
+            {
+                Debug.Log("max interaction reached");
+            }
+            numInteractionCurrent++;
         }
 
         // Check if player is holding an object 
