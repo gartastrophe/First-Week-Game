@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
     public Text gameOverText;
     public Text gameWonText;
 
-    public float totalTime = 30; 
+    public float totalTime = 120    ; 
 
     public PlayerControls playerControls;
     public MouseLook mouseLook;
