@@ -15,8 +15,13 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
-  m_AudioMixerGroupViews: []
+  m_ExposedParameters:
+  - guid: aca7032ce4ff36043b305ec58a123e99
+    name: humVolume
+  m_AudioMixerGroupViews:
+  - guids:
+    - 5bb267b4c3eab1f488bb25b772696307
+    name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
 --- !u!243 &24300002

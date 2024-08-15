@@ -1812,6 +1812,7 @@ MonoBehaviour:
   createdObj: {fileID: 0}
   instXOff: 0.5
   instZOff: 0
+  numInteractionMax: 0
   interactionSFX: {fileID: 8300000, guid: bb7d0836f4b7f824a8de01eda33721bf, type: 3}
   player: {fileID: 689259445001169544}
   holdPos: {fileID: 6840608792971313692}

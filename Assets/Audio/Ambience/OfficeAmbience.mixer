@@ -15,8 +15,13 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
-  m_AudioMixerGroupViews: []
+  m_ExposedParameters:
+  - guid: 1ed620dfa81becf46afcb4685301af51
+    name: ambienceVolume
+  m_AudioMixerGroupViews:
+  - guids:
+    - ff0399d4b17917040bb5146decd064fe
+    name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
 --- !u!243 &24300002

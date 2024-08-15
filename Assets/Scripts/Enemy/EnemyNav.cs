@@ -154,7 +154,7 @@ public class EnemyNav : MonoBehaviour
     {
         anim.SetInteger("state", 2);
 
-        if (distanceToPlayer <= attackDistance)
+        if (distanceToPlayer <= attackDistance && !PlayerInteract.currentlyHiding) // added check for if player is hiding
         {
             if (!playerJumpscared)
             {
@@ -182,7 +182,7 @@ public class EnemyNav : MonoBehaviour
     void UpdateSearchState()
     {
         Debug.Log(searchingStateTimer);
-        if (distanceToPlayer <= attackDistance)
+        if (distanceToPlayer <= attackDistance && !PlayerInteract.currentlyHiding) // added check for if player is hiding
         {
             if (!playerJumpscared)
             {

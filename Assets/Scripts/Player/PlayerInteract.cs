@@ -12,18 +12,24 @@ public class PlayerInteract : MonoBehaviour
     public float instZOff;
     public float numInteractionMax;
     public AudioClip interactionSFX;
+    private GameObject interactItem;
     
     Vector3 spawnPos;
     float numInteractionCurrent;
 
-    // Defs for Pickups
+    // Defs for Collectibles
     public GameObject player;
     public Transform holdPos;
     private GameObject heldObj; //object which we pick up
     private Rigidbody heldObjRb; //rigidbody of object we pick up
     private int LayerNumber; //layer index
     private GameObject pickupItem;
-    private GameObject interactItem;
+    
+
+    // Defs for Hiding
+    public static bool currentlyHiding = false;
+    private GameObject hideLocation;
+    private Vector3 lastPlayerPos;
 
 
     void Start()
@@ -36,6 +42,7 @@ public class PlayerInteract : MonoBehaviour
         }
 
         numInteractionCurrent = 0;
+        currentlyHiding = false;
     }
 
     
@@ -56,7 +63,7 @@ public class PlayerInteract : MonoBehaviour
         }
 
         // Interact action
-        else if (Input.GetKeyDown(KeyCode.Q) && interactItem != null)
+        if (Input.GetKeyDown(KeyCode.Q) && interactItem != null)
         {
             // be sure to add empty game objects as children of collectible to increase score
             if (numInteractionCurrent <= numInteractionMax) //limit the amount of deliverables which can be created.
@@ -68,6 +75,19 @@ public class PlayerInteract : MonoBehaviour
                 Debug.Log("max interaction reached");
             }
             numInteractionCurrent++;
+        }
+
+        // Hide action
+        if (Input.GetKeyDown(KeyCode.F) && hideLocation != null)
+        {
+            if (!currentlyHiding)
+            {
+                PlayerHides(hideLocation);
+            }
+            else if (currentlyHiding)
+            {
+                PlayerUnhides();
+            }
         }
 
         // Check if player is holding an object 
@@ -97,6 +117,10 @@ public class PlayerInteract : MonoBehaviour
         {
             interactItem = collider.GameObject();
         }
+        else if(collider.CompareTag("CanHide"))
+        {
+            hideLocation = collider.GameObject();
+        }
     }
 
     void OnTriggerExit(Collider collider)
@@ -109,7 +133,13 @@ public class PlayerInteract : MonoBehaviour
         {
             interactItem = null;
         }
+        else if(collider.CompareTag("CanHide"))
+        {
+            hideLocation = null;
+        }
     }
+
+    // COLLECTIBLES
 
     // The methods PickupObject, DropObject, MoveObject, and StopClipping are copy/paste from JohnDevTutorials github
     void PickUpObject(GameObject pickUpObj)
@@ -156,6 +186,7 @@ public class PlayerInteract : MonoBehaviour
     }
 
 
+    // INTERACTABLES
     void ProcessInteract(GameObject interactableObj)
     {
         spawnPos.x = interactableObj.transform.position.x + instXOff + Random.Range(0.0f, 0.1f);
@@ -166,4 +197,32 @@ public class PlayerInteract : MonoBehaviour
         Instantiate(createdObj, spawnPos, transform.rotation);
         createdObj.SetActive(true);
     }
+
+
+
+    // HIDING
+
+    void PlayerHides(GameObject hideLocation)
+    {
+        currentlyHiding = true;
+
+        // remember where player hid from
+        lastPlayerPos = player.transform.position;
+
+        player.transform.position = hideLocation.transform.position;
+        player.transform.rotation = hideLocation.transform.rotation;
+
+        player.GetComponent<CharacterController>().enabled = false;
+    }
+
+
+    void PlayerUnhides()
+    {
+        currentlyHiding = false;
+        
+        player.transform.position = lastPlayerPos;
+        
+        player.GetComponent<CharacterController>().enabled = true;
+    }
+
 }
